@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>로그인 페이지</title>
+</head>
+<body>
+    <div>
+        <form action="/auth/login" method="POST" class="user-form">
+            <p>로그인</p>
+            <div><input class="user-id" name="userID" type="text" placeholder="아이디를 입력해주세요"/></div>
+            <div><input class="user-password" name="password" type="password" placeholder="비밀번호를 입력해주세요"/></div>
+            <div><button type="submit">로그인</button></div>
+            <a href="/auth/logout">로그아웃</a>
+            <!--<button onclick="kakaoLogin()">카카오톡</button>-->
+            <a href="/auth/register">회원가입 하기</a>
+        </form>
+    </div>
+    <script>
+        window.onload = () => {
+          if (new URL(location.href).searchParams.get("loginError")) {
+            alert(new URL(location.href).searchParams.get("loginError"));
+          }
+        };
+
+        /*function kakaoLogin(){
+          window.location.href = 'https://kauth.kakao.comoauth/authorize?client_id=${711c41c7252c8043f85206a2a0d00cf0}&redirect_uri=${localhost:3001/auth/kakao/callback}&response_type=code';
+        }*/
+      </script>
+</body>
+</html>

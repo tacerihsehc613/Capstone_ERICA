@@ -16,15 +16,19 @@ module.exports = class User extends Sequelize.Model {
         },
         age: {
           type: Sequelize.INTEGER.UNSIGNED,
-          allowNull: true,
+          allowNull: false,
         },
         gender: {
           type: Sequelize.ENUM("male", "female"),
-          allowNull: true,
+          allowNull: false,
+        },
+        area: {
+          type: Sequelize.STRING(20),
+          allowNull: false,
         },
         provider: {
           type: Sequelize.STRING(10),
-          allowNull: false,
+          allowNull: true,
           defaultValue: "local",
         },
         snsId: {

@@ -19,7 +19,7 @@ router
   })
   //등록하기
   .post(isNotLoggedIn, async (req, res, next) => {
-    const { userID, password, age, gender } = req.body;
+    const { userID, password, age, gender, area } = req.body;
     try {
       //기존에 ID로 가입한 사람이 있는지 확인한다
       const exUser = await User.findOne({ where: { userID: req.body.userID } });
@@ -35,6 +35,7 @@ router
         password: hash,
         age,
         gender,
+        area,
       });
 
       //다시 메인페이지로 돌려보낸다

@@ -40,6 +40,10 @@ module.exports = class User extends Sequelize.Model {
           allowNull: false,
           defaultValue: Sequelize.NOW,
         },
+        last_login: {
+          type: Sequelize.DATE,
+          allowNull: true,
+        },
       }, //두번째 인수는 모델에 대한 설정
       {
         sequelize,

@@ -30,7 +30,7 @@ nunjucks.configure("views", {
 
 //node에서 mysql연결이 된다(sequelize를 통해서)
 sequelize
-  .sync({ force: true })
+  .sync({ force: false })
   .then(() => {
     console.log("데이터베이스 연결 성공");
   })

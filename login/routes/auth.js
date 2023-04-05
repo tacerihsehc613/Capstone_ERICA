@@ -36,6 +36,7 @@ router
         age,
         gender,
         area,
+        last_login: Date.now(),
       });
 
       //다시 메인페이지로 돌려보낸다
@@ -70,7 +71,18 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
       }
       //세션 쿠키를 브라우저로 보내준다
       //에러 없으면 로그인 성공
-      return res.redirect("/main"); //(수정)
+      User.update(
+        { last_login: new Date() },
+        { where: { userID: req.body.userID } }
+      )
+        .then(() => {
+          console.log("Update successful");
+        })
+        .catch((err) => {
+          console.error("Update failed", err);
+        });
+
+      return res.redirect("/main"); //redirect->get(2023.4.1)
     });
   })(req, res, next);
 });
@@ -81,17 +93,5 @@ router.get("/logout", isLoggedIn, (req, res) => {
   req.session.destroy();
   res.redirect("/");
 });
-
-//router.get("/kakao", passport.authenticate("kakao"));
-
-/*router.get(
-  "/kakao/callback",
-  passport.authenticate("kakao", {
-    failureRedirect: "/",
-  }),
-  (req, res) => {
-    res.redirect("/main");
-  }
-);*/
 
 module.exports = router;

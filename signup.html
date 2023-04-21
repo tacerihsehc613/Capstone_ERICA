@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JR Sign Up</title>
+    <link rel="stylesheet" href="signup.css">
+    <!-- <script src="jquery"></script> -->
+</head>
+<body>
+        <section class="container">
+            <header>Registration Form</header>
+            <form action="#" class="form">
+              <div class="input-box">
+                <label class="font">ID</label>
+                <input type="text" placeholder="Enter ID" />  <!-- required -->
+              </div>
+      
+              <div class="input-box">
+                <label class="font">Password</label>
+                <input type="text" placeholder="Enter password" />
+              </div>
+      
+              <div class="column">
+                <div class="input-box">
+                  <label class="font">Name</label>
+                  <input type="text" placeholder="Enter Name"  />
+                </div>
+
+                <div class="input-box">
+                  <label class="font">Birth Date</label>
+                  <input type="date" placeholder="Enter birth date"  />
+                </div>
+              </div>
+              <div class="gender-box">
+                <h3 class="font">Gender</h3>
+                <div class="gender-option">
+                  <div class="gender">
+                    <input type="radio" id="check-male" name="gender" checked />
+                    <label for="check-male">Male</label>
+                  </div>
+                  <div class="gender">
+                    <input type="radio" id="check-female" name="gender" />
+                    <label for="check-female">Female</label>
+                  </div>
+                  <!-- <div class="gender">
+                    <input type="radio" id="check-other" name="gender" />
+                    <label for="check-other">prefer not to say</label>
+                  </div> -->
+                </div>
+              </div>
+              <div class="input-box address">
+                <label class="font">Address</label>
+                <!-- <input type="text" placeholder="Enter street address" required /> -->
+                <!-- <input type="text" placeholder="Enter street address line 2" required /> -->
+                <div class="column">
+                  <div class="select-box">
+                    <select>
+                      <option hidden>Location</option>
+                      <option>local1</option>
+                      <option>local2</option>
+                      <option>local3</option>
+                      <option>local4</option>
+                      <option>local5</option>
+                    </select>
+                  </div>
+                  <!-- <input type="text" placeholder="Enter your city" required /> -->
+                </div>
+                <!-- <div class="column">
+                  <input type="text" placeholder="Enter your region" required />
+                  <input type="number" placeholder="Enter postal code" required />
+                </div> -->
+              </div>
+              <div class="column2">
+                <div class="input-box">
+                  <a class="signup_button" href="login.html" style="background-color: #ececff;">Back to Login page</a>
+                </div>
+                <div>
+                  <a class="signup_button" href="login.html">Submit</a>
+                </div>
+              </div>
+              </form>
+        </section>
+</body>
+</html>

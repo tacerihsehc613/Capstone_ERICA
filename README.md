@@ -3,8 +3,9 @@
 
 AuraDB 에 호스팅한 회사 데이타 베이스. 
 #### 링크
-Company: neo4j+s://21f49612.databases.neo4j.io
-Review: neo4j+s://b2036ca7.databases.neo4j.io
+- Company: neo4j+s://21f49612.databases.neo4j.io
+- Review: neo4j+s://b2036ca7.databases.neo4j.io
+
 선택한 데이타 베이스 인스턴스의 최대 노드수와 관계 수에 제한이 있기 때문에 처음 로컬에서 생성한 db 인스턴스와 형태가 달라졌기 때문에 서버 db 쿼리문에 차이가 있음.
 먼저, 초기 company csv 파일로부터 Customer, Product, Store 노드와 SELLS 관계를 단순 열 삽입으로 생성했고
 BoughtAt and Customer_INTER 는 graph ds algorithm과  apoc library 를 이용해 생성한 관계이다.

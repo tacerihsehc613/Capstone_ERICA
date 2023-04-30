@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Influential Customer</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://d3js.org/d3-force.v3.min.js"></script>
+</head>
+<body>
+
+<h1>Influential Customer</h1>
+<canvas id="network" width="1000" height="700"></canvas>
+<div id="selected-node"></div>
+<script>
+
+var graph = JSON.parse('{{g | safe}}');
+
+var canvas = d3.select("#network"),
+  width = canvas.attr("width"),
+  height = canvas.attr("height"),
+  ctx = canvas.node().getContext("2d"),
+  r = 35,
+  color = d3.scaleOrdinal(d3.schemeAccent),
+  simulation = d3.forceSimulation()
+    .force("x", d3.forceX(width/2))
+    .force("y", d3.forceY(height/2))
+    .force("collide", d3.forceCollide(() => 50)
+          .radius(100)
+          .iterations(3)
+          .strength(1))
+    .force("charge", d3.forceManyBody()
+      .strength(-20))
+    .force("link", d3.forceLink()
+      .id(function (d) { return d.id; }))
+    .on("tick", update);
+
+canvas.on("click", function(event) {
+  if (selectedNode) {
+    document.getElementById("selected-node").textContent = selectedNode.lastname;
+  }
+});
+/* graph.nodes.forEach(function(d){
+    d.x=Math.random()*width;
+    d.y=Math.random()*height;
+
+}); */
+simulation.nodes(graph.nodes);
+    simulation.force("link")
+        .links(graph.links);
+    simulation.on("tick", update);
+
+    canvas
+      .call(d3.drag()
+          .container(canvas)
+          .subject(dragsubject)
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended)); 
+          
+    canvas.on("mouseup", function(event) {
+        if (draggedNode) {
+        dragended(event);
+    };
+    canvas.on("click", function(event) {
+        if (selectedNode) {
+            document.getElementById("selected-node").textContent = selectedNode.lastname;
+        }
+    });
+});
+
+    //canvas.call(drag(simulation));
+    //console.log(graph);
+    function update() {
+        ctx.clearRect(0, 0, width, height);
+
+        ctx.beginPath();
+        ctx.globalAlpha = 0.1;
+        ctx.strokeStyle = "steelblue";
+        graph.links.forEach(drawLink);
+        ctx.stroke();
+
+        //ctx.beginPath();
+        ctx.globalAlpha = 1.0;
+        graph.nodes.forEach(drawNode);
+        // ctx.fill();  
+    }
+    function dragsubject(event) {
+        console.log('event.x:', event.x);
+        console.log('event.y:', event.y);
+        return simulation.find(event.x, event.y);
+    }
+    console.log(event)
+    update();
+function drawNode(d) {
+  ctx.beginPath();
+  //change the fillStyle to be the color of the node's party
+  ctx.fillStyle = color(d.community);
+  ctx.moveTo(d.x, d.y);
+  ctx.arc(d.x, d.y, r, 0, Math.PI*2);
+  ctx.fill(); 
+  ctx.font = "16px Arial";
+  ctx.fillStyle = "#fff";
+  ctx.textAlign = "center";
+  ctx.fillText(d.lastname, d.x, d.y + 5);
+}
+
+function drawLink(l) {
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = "#4682B4"
+  ctx.moveTo(l.source.x, l.source.y);
+  ctx.lineTo(l.target.x, l.target.y);
+
+  // add weight value in the middle of the line
+  var x = (l.source.x + l.target.x) / 2;
+  var y = (l.source.y + l.target.y) / 2;
+  ctx.fillStyle = "red";// set text color
+  ctx.globalAlpha = "0.5"; 
+  ctx.font = "15px Arial"; // set font
+  ctx.fillText(l.weight, x, y);
+}
+
+/* function dragstarted(event, d) {
+    if (!event.active) simulation.alphaTarget(0.3).restart();
+    d.fx = d.x;
+    d.fy = d.y;
+  }
+
+  function dragged(event, d) {
+    d.fixed = true;
+    d.fx = event.x;
+    d.fy = event.y;
+  }
+
+  function dragended(event, d) {
+    if (!event.active) simulation.alphaTarget(0);
+    d.fx = null;
+    d.fy = null;
+  } */
+
+function dragstarted(event) {
+  console.log('dragstarted() called');
+  print(event.x,event.y);
+  //console.log(event);
+  if (!event.active) simulation.alphaTarget(0.3).restart();
+  //d.fx = d.x;
+  //d.fy = d.y;
+  event.subject.fx = event.subject.x;
+  event.subject.fy = event.subject.y;
+  console.log('event.subject:', event.subject);
+  selectedNode = event.subject;
+  event.subject = null;
+}
+
+function dragged(event) {
+  console.log('dragged() called');
+  //console.log(event);
+  //d.fx = event.x;
+  //d.fy = event.y;
+  event.subject.fx = event.x;
+  event.subject.fy = event.y;
+
+}
+
+function dragended(event) {
+  console.log('dragended() called');
+  //console.log(event);
+  if (!event.active) simulation.alphaTarget(0);
+  //d.fx = null;
+  //d.fy = null;
+  /*event.fx = null;
+  event.fy = null;
+  event.subject=null;
+  draggedNode.fx = null;
+  draggedNode.fy = null;
+  draggedNode = null; */
+  event.subject.fx = null;
+  event.subject.fy = null;
+} 
+
+
+</script>
+
+</body>
+</html>

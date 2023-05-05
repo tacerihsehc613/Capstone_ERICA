@@ -1,5 +1,6 @@
 const express = require('express');
 const { getNodeRecords, getEdgeRecords } = require('../neo4j/company');
+const { getNodeRecords2, getEdgeRecords2 } = require('../neo4j/review');
 const { getCustomerStoreList } = require('../neo4j/aura');
 const getRecords = require('../ML/connect');
 
@@ -41,6 +42,43 @@ router.get('/company', async (req, res, next) => {
   }
 });
 
+router.get('/review', async (req, res, next) => {
+  try {
+    const limit = 10; // the limit value can be set to any number you want
+    const query=`
+      match (r:Review)
+      return r.identity as id, r.store as store, r.text as text, r.pagerank as pagerank, r.community as community
+      order by r.pagerank desc 
+      LIMIT $limit
+    `;
+    const query2 = `
+      MATCH (c:Review)
+      WITH c ORDER BY c.pagerank DESC LIMIT $limit
+      with COLLECT(c.identity) AS c_ids
+      UNWIND c_ids AS c_id with c_id, c_ids
+      MATCH (i:Review_INTER) WHERE i.from = c_id
+      UNWIND keys(apoc.convert.fromJsonMap(i.map)) AS c2_id
+      MATCH (c2:Review) WHERE c2.identity = toInteger(c2_id) AND c2.identity <> c_id and c2.identity in c_ids WITH c_id,  c2_id,apoc.convert.fromJsonMap(i.map)[c2_id] AS weight
+      RETURN c_id as from, toInteger(c2_id) as to, weight
+    `;
+    var graph = {
+      nodes : [],
+      links : []
+    }
+    graph.nodes= await getNodeRecords2(query, limit);
+    graph.links = await getEdgeRecords2(query2, limit);
+
+    //res.render('neo-graph', { g: JSON.stringify(graph).replace(/"/g, '&quot;')  });
+    //res.render('neo-graph', { g: JSON.stringify(graph)  });
+    //res.render('neo-graph', { g: graph });
+    console.log(graph);
+    res.render('force2', { g: JSON.stringify(graph) });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
 router.get('/aura', async (req, res, next) => {
   try {
     const customers = await getCustomerStoreList();
@@ -56,9 +94,9 @@ router.get('/review', async (req, res, next) => {
   try {
     const limit = 6; // the limit value can be set to any number you want
     const query = `
-      MATCH (n:Review)
-      RETURN n.store, n.address, n.text, n.pagerank as pg
-      ORDER BY pg DESC
+      match (r:Review)
+      return r.identity as id, r.store as store, r.pagerank as pagerank, r.community as community
+      order by r.pagerank desc 
       LIMIT $limit
     `;
     const records = await getRecords(query, limit);
@@ -69,7 +107,7 @@ router.get('/review', async (req, res, next) => {
   }
 }); 
 
-router.post('/review', (req, res) => {
+router.post('/review-text', (req, res) => {
   const { limit } = req.body;
   const query = `
     MATCH (n:Review)

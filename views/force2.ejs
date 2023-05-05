@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top reviews from customers</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .card {
+            max-width: 300px; /* adjust this to match the width of your container element */
+        }
+        .cardPkTextPosition {
+            word-wrap: break-word;
+        }
+        .cardPkTextPosition {
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Top reviews from customers</h1>
+    <div class="container">
+         <svg id="svg1"></svg>
+         <svg id="svg2"></svg>
+
+    </div>
+
+    <script>
+        var graph = JSON.parse('{{g | safe}}');
+        // 그래프를 그리기 위한 객체
+        const networkGraph = {
+            createGraph: function (nodes, links) {
+                // svg의 크기
+                const width = 800
+                const height = 600
+
+                // 그룹별로 color
+                /* const fillColor = function (g) {
+                    if (g == '주식회사') {
+                        return 'pink'
+                    } else if (g == '학원') {
+                        return 'skyblue'
+                    } else if (g == '학원') {
+                        return 'blue'
+                    } else {
+                        return 'red'
+                    }
+                } */
+                const colorScale = d3.scaleOrdinal()
+                .domain(d3.range(10))
+                .range(d3.schemeCategory10);
+
+                // 기본적인 인력과 척력, 중력 세팅
+                // https://runebook.dev/ko/docs/d3/d3-force#many-body
+                // https://github.com/d3/d3-force/blob/v3.0.0/README.md#forces
+
+                const simulation = d3.forceSimulation(nodes)
+                    .force('link', d3.forceLink(links).id(d => d.id))
+                    .force('charge', d3.forceManyBody().strength(0)) // 모든 노드 간에 힘, 양이면 당기고 음수면 반발합니다.
+                    .force('center', d3.forceCenter(width / 2, height / 2)) // 중력의 중심점
+                    .force('collide', d3.forceCollide(() => 50).radius(100)) // 노드가 겹치지 않게, 줄이면 겹쳐집니다.
+                
+                //const svg = d3.select('svg')
+                const svg2 = d3.select("#svg2");
+                svg2
+                    .attr('width', width)
+                    .attr('height', height)
+
+                //const g = svg.append('g')
+                const g = svg2.append('g')
+
+
+                const link = g.append('g')
+                    .attr('stroke', 'steelblue')
+                    .attr('stroke-opacity', '0.3') // 라인의 투명도, 선이 겹치는 경우가 많아 보통 투명하게 설정
+                    .selectAll('line')
+                    .data(links)
+                    .join('line')
+                    .attr('stroke-width', d => Math.sqrt(d.weight * 3)) // 거리에 비례하여 두깨 설정
+
+                // node metadata, show on hover.
+                const svg1 = d3.select("#svg1");
+                svg1
+                    .attr('width', 1800)
+                    .attr('height', 100) 
+                const card = svg1
+                    .append("g")
+                    .attr("pointer-events", "none")
+                    .attr("display", "none")
+                    .style("overflow", "visible");
+
+                const cardBackground = card
+                    .append("rect")
+                    .attr("width", 1500)
+                    .attr("height", 100)
+                    .attr("fill", "#eee")
+                    .attr("stroke", "#333")
+                    .attr("rx", 5)
+                    .style("overflow", "visible");
+
+                const cardTextName = card
+                    .append("text")
+                    .attr("transform", "translate(8, 20)");
+
+                const cardTextPosition = card
+                    .append("text")
+                    .attr("font-size", "10")
+                    .attr("transform", "translate(10, 35)");
+
+                const cardRawTextPosition = card
+                    .append("text")
+                    .attr("font-size", "10")
+                    .attr("transform", "translate(10, 50)");
+
+                const cardPgTextPosition = card
+                    .append("text")
+                    .attr("font-size", "10")
+                    .attr("transform", "translate(10, 65)");
+                
+                cardRawTextPosition.selectAll("tspan").remove(); // remove any existing tspans
+
+                    const words = cardRawTextPosition.text().split(" ");
+                    const maxWidth = 800; // set the maximum width of each line
+
+                    let currentLine = 0;
+                    //let tspans = [];
+                    let tspans = [cardRawTextPosition.append("tspan").attr("x", 0).attr("y", 0)];
+
+                // loop through each word in the text
+                for (let i = 0; i < words.length; i++) {
+                    const word = words[i];
+                    let tspan = tspans[currentLine] || cardRawTextPosition.append("tspan").attr("x", 0).attr("y", 0);
+
+                    tspan.text(tspan.text() + " " + word);
+
+                    if (tspan.node().getComputedTextLength() > maxWidth) {
+                    // if the tspan's width exceeds the maxWidth, create a new tspan for the next line
+                    currentLine++;
+                    //tspan = cardRawTextPosition.append("tspan").attr("x", 0).attr("y", 20 * currentLine).text(word);
+                    tspan = cardRawTextPosition.append("tspan").attr("x", 0).attr("y", 15 + (currentLine * 15)).text(word);
+                    tspans.push(tspan);
+                }
+            } 
+
+            tspans = cardRawTextPosition.selectAll("tspan")
+                .enter()
+                .append("tspan")
+                .attr("x", 0)
+                .attr("dy", "1.2em")
+                .text((d) => d);
+            
+
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                let currentTarget;
+
+                function onMouseOverFunc(event, d) {
+                    /**
+                    * On mouse over any node, draw the tooltip in that place.
+                    */
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    currentTarget = event.target;
+                    card.attr("display", "block");
+
+                    /**
+                    * Set the desired fields in the text area.
+                    */
+                    cardTextName.text(d.community);
+                    cardTextPosition.text(d.store);
+                    cardRawTextPosition.text(`text: ${d.text}`);
+                    cardPgTextPosition.text(`pagerank: ${d.pagerank}`);
+
+                    /**
+                    * Automatically size the card to the widest of: the personnel name, personnel role.
+                    */
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    const nameWidth = cardTextName.node().getBBox().width;
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    const positionWidth = cardTextPosition.node().getBBox().width;
+                    const cardWidth = Math.max(nameWidth, positionWidth);
+
+                    cardBackground.attr("width", cardWidth + 800);
+
+                    simulation.alphaTarget(0).restart();
+                }
+
+                const node = g.append('g')
+                    .selectAll('g')
+                    .data(nodes)
+                    .enter()
+                    .append('g')
+                    .each(function (d) {
+                        d3.select(this)
+                            .append('circle')
+                            .attr('r', 35)
+                            .attr('fill', colorScale(d.community))
+
+                        d3.select(this)
+                            .append('text')
+                            .text(`id : ${d.id}, store : ${d.store}`)
+                            .attr('dy', 0) //0과 100을 설정해보세요.
+                            .style('text-anchor', 'middle')
+                    })
+                    .call(drag(simulation))
+                    .on("mouseout", () => {
+      
+                        /**
+                        * When the mouse is moved off a node, hide the card.
+                        */
+                        card.attr("display", "none");
+                        currentTarget = null;
+                    }).on("mouseover", onMouseOverFunc); 
+
+                simulation.on('tick', function () {
+                    link.attr("x1", d => d.source.x)
+                        .attr("y1", d => d.source.y)
+                        .attr("x2", d => d.target.x)
+                        .attr("y2", d => d.target.y)
+
+                    node.attr("transform", d => `translate(${d.x},${d.y})`);
+                })
+
+                return svg2.node()
+            }
+        }
+
+        // https://observablehq.com/@d3/force-directed-lattice?collection=@d3/d3-drag
+        // https://github.com/d3/d3-drag/blob/v3.0.0/README.md#drag_on
+        function drag(simulation) {
+            function start(event, d) { // event와 d값이 들어가게 됩니다.
+                if (!event.active) { simulation.alphaTarget(0.3).restart() } //시뮬레이션 재시작
+                // alphaTarget은 0 ~ 1의 값을 가집니다. 처음에 시작되는 애니메이션이라 생각하시면 됩니다.
+                d.fx = d.x;
+                d.fy = d.y;
+
+                console.log(event)
+                console.log(d)
+                console.log(this)
+                d3.select(this)
+                    .select('circle')
+                    .attr('stroke', 'black')
+                    .attr('stroke-width', '10px')
+            }
+
+            function drag(event, d) {
+                d.fx = event.x;
+                d.fy = event.y;
+            }
+
+            function end(event, d) {
+                if (!event.active) { simulation.alphaTarget(0) }
+                d.fx = null;
+                d.fy = null;
+
+                d3.select(this)
+                    .select('circle')
+                    .attr('stroke', 'null')
+                    .attr('stroke-width', 'null')
+            }
+
+            return d3.drag()
+                .on('start', start)
+                .on('drag', drag)
+                .on('end', end)
+
+        }
+
+        
+
+        networkGraph.createGraph(graph.nodes, graph.links);
+
+    </script>
+
+</body>
+
+</html>

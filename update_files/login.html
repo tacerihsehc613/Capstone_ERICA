@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JR Login</title>
+    <link rel="stylesheet" href="login.css">
+    <!-- <script src="jquery"></script> -->
+</head>
+<body>
+    <section class="login-form">
+        <div>
+            <img class="logo" src="img/jr.png"  alt="JR_logo">
+        </div>
+        <form action="">
+            <div class="int-area">
+                <input type="text" name = "id" id="id"
+                autocomplete="off" required>
+                <label for="id">USER NAME</label>
+            </div>
+            <div class="int-area">
+                <input type="password" name="pw" id="pw"
+                autocomplete="off" required>
+                <label for="pw">PASSWORD</label>
+            </div>
+            <div>
+                <button class="btn-area" onclick="location.href='main.html'">LOGIN</button>
+            </div>
+        </form>
+        <div class="caption">
+            <h5>No account?</h5>
+            <a href="signup.html">Create one</a>
+        </div>
+    </section>
+
+    <!-- <script>
+        let id = document.querySelector('#id')
+        let pw = document.querySelector('#pw')
+        let btn = document.querySelector('#btn')
+
+        btn.addEventListener('click', () => {
+            if(id.value == "") {
+                label = id.nextElementSibling
+                label.classList.add('warning')
+                setTimeout(() => {
+                    label.classList.remove('warning')
+                }, 1500)
+            } else if(pw.value == "") {
+                label = pw.nextElementSibling
+                label.classList.add('warning')
+                setTimeout(() => {
+                    label.classList.remove('warning')
+                }, 1500)
+            }
+        })
+    </script> -->
+
+</body>
+</html>

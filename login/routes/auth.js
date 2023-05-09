@@ -15,11 +15,11 @@ router
   .route("/register")
   //가져오기
   .get((req, res, next) => {
-    res.render("signUp");
+    res.render("signup");
   })
   //등록하기
   .post(isNotLoggedIn, async (req, res, next) => {
-    const { userID, password, age, gender, area } = req.body;
+    const { userID, password, name, birthDate, gender, area } = req.body;
     try {
       //기존에 ID로 가입한 사람이 있는지 확인한다
       const exUser = await User.findOne({ where: { userID: req.body.userID } });
@@ -33,7 +33,8 @@ router
       await User.create({
         userID,
         password: hash,
-        age,
+        name,
+        birthDate,
         gender,
         area,
         last_login: Date.now(),

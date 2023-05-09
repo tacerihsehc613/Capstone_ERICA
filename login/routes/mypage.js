@@ -2,9 +2,8 @@ const express = require("express");
 
 const router = express.Router();
 
-//GET /라우터
-router.route("/").get((req, res) => {
-  res.render("login");
+router.route("/").get((req, res, next) => {
+  res.render("mypage");
 });
 
 module.exports = router;

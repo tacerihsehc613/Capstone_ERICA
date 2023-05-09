@@ -14,6 +14,7 @@ const indexRouter = require("./routes");
 //const registerRouter = require("./routes/register");
 const authRouter = require("./routes/auth");
 const mainRouter = require("./routes/main");
+const mypageRouter = require("./routes/mypage");
 const passportConfig = require("./passport");
 
 //express로부터 app을 가져온다
@@ -61,10 +62,12 @@ app.use(passport.initialize());
 //로그인 후에는 그 다음 요청부터 passport.session()을 실행한다
 app.use(passport.session());
 
+app.use(express.static("public")); //0424추가
 app.use("/", indexRouter);
 //app.use("/register", registerRouter);
 app.use("/auth", authRouter);
 app.use("/main", mainRouter);
+app.use("/mypage", mypageRouter);
 
 //클라이언트가 잘못된 url로 들어갔을때 404에러를 보낸다
 app.use((req, res, next) => {
@@ -85,3 +88,83 @@ app.use((err, req, res, next) => {
 app.listen(app.get("port"), () => {
   console.log(app.get("port"), "번 포트에서 대기 중");
 });
+
+/*
+const neo4j = require("neo4j-driver");
+const driver = neo4j.driver(
+  "neo4j+s://gdb-q1nuq4z96jlkvbkvnhvd.graphenedb.com:24786",
+  neo4j.auth.basic("neo4j", "Jay2833748!")
+);
+
+const session = driver.session();
+
+const query = `
+MATCH (c:Customer)-[:ORDERED]->(:Product)<-[:SELLS]-(s:Store)
+  WITH c.customerId AS customerId, COLLECT(DISTINCT s.storeId) AS storeIds
+  RETURN COLLECT({
+    customerId: customerId,
+    storeNum: size(storeIds),
+    storeIds: storeIds
+  }) AS customerStoreList
+  LIMIT 5`;
+
+session
+  .run(
+    `MATCH (c:Customer)-[:ORDERED]->(:Product)<-[:SELLS]-(s:Store)
+         WITH c.customerId AS customerId, COLLECT(DISTINCT s.storeId) AS storeIds
+         RETURN COLLECT({
+           customerId: customerId,
+           storeNum: size(storeIds),
+           storeIds: storeIds
+         }) AS customerStoreList
+         LIMIT 5`
+  )
+  .then((result) => {
+    result.records.forEach((record) => {
+      const customerStoreList = record.get("customerStoreList");
+
+      customerStoreList.slice(0, 5).forEach((customerStore) => {
+        console.log(`CustomerId: ${customerStore.customerId}`);
+        console.log(`StoreNum: ${customerStore.storeNum}`);
+        console.log(`StoreIds: ${customerStore.storeIds}`);
+      });
+    });
+  })
+  .catch((error) => {
+    console.error(error);
+  })
+  .finally(() => {
+    session.close();
+    driver.close();
+  });
+
+async function getCustomerStoreList() {
+  const session = driver.session();
+
+  const query = `
+      MATCH (c:Customer)-[:ORDERED]->(:Product)<-[:SELLS]-(s:Store)
+      WITH c.customerId AS customerId, COLLECT(DISTINCT s.storeId) AS storeIds
+      RETURN COLLECT({
+        customerId: customerId,
+        storeNum: size(storeIds),
+        storeIds: storeIds
+      }) AS customerStoreList
+      LIMIT 5`;
+
+  try {
+    const result = await session.run(query);
+    const customerStoreList = result.records.map((record) =>
+      record.get("customerStoreList")
+    );
+    return customerStoreList;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  } finally {
+    session.close();
+    driver.close();
+  }
+}
+
+module.exports = { getCustomerStoreList };
+*/

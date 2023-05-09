@@ -14,8 +14,12 @@ module.exports = class User extends Sequelize.Model {
           type: Sequelize.STRING(500),
           allowNull: false,
         },
-        age: {
-          type: Sequelize.INTEGER.UNSIGNED,
+        name: {
+          type: Sequelize.STRING(20),
+          allowNull: false,
+        },
+        birthDate: {
+          type: Sequelize.DATEONLY,
           allowNull: false,
         },
         gender: {
@@ -56,5 +60,12 @@ module.exports = class User extends Sequelize.Model {
         collate: "utf8_general_ci",
       }
     );
+  }
+
+  static associate(db) {
+    db.User.belongsToMany(db.Store, {
+      foreignKey: "userId",
+      through: "Like",
+    });
   }
 };

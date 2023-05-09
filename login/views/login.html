@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>로그인 페이지</title>
+    <link rel="stylesheet" href="/login.css">
+</head>
+<body>
+      <section class="login-form">
+        <div>
+            <img class="logo" src="img/jr.png"  alt="JR_logo">
+        </div>
+        <form action="/auth/login" method="POST" class="user-form">
+            <div class="int-area">
+                <input type="text" name = "userID" id="id"
+                autocomplete="off" required>
+                <label for="id">USER NAME</label>
+            </div>
+            <div class="int-area">
+                <input type="password" name="password" id="pw"
+                autocomplete="off" required>
+                <label for="pw">PASSWORD</label>
+            </div>
+            <div>
+                <button class="btn-area" type="submit">LOGIN</button>
+            </div>
+        </form>
+        <div class="caption">
+            <h5>No account?</h5>
+            <a href="/auth/register">Create one</a>
+        </div>
+    </section>
+
+    <script>
+        window.onload = () => {
+          if (new URL(location.href).searchParams.get("loginError")) {
+            alert(new URL(location.href).searchParams.get("loginError"));
+          }
+        };
+      </script>
+</body>
+</html>

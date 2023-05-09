@@ -2,8 +2,45 @@
 <head>
     <meta charset="UTF-8">
     <title>메인 페이지</title>
+    <link rel="stylesheet" href="main.css">
 </head>
 <body>
-    <h1>메인 페이지 입니다.</h1>
+    <section class="main-form">
+        <div>
+            <img class="logo_main" src="img/jr.png"  alt="JR_logo">
+        </div>
+        <div>
+            <button class="mypage-button" onclick="location.href='/mypage'">My Page</button>
+        </div>
+        <div>
+            <button class="logout-button" onclick="location.href='/auth/logout'">Logout</button>
+        </div>
+        <div class="white_background">
+            <div class="comment">
+                <h1>✨RECOMMENDATION FOR YOU✨</h1>
+            </div>
+            <div class="cardBox">
+                <div>
+                    <a class="none" href="googoodang.html">
+                        <img class="circle_img" src="img/googoodang_img.jpeg" alt="googoodang_img">
+                        <p class="storeName">Googoodang</p>
+                    </a>
+                </div>
+                <div>
+                    <a class="none" href="nubase.html">
+                        <img class="circle_img" src="img/nubase_img.png" alt="nubase_img">
+                        <p class="storeName">Nubase</p>
+                    </a>
+                </div>
+                <div>
+                    <a class="none" href="babilian.html">
+                        <img class="circle_img" src="img/babilian_img.jpeg" alt="babilian_img">
+                        <p class="storeName">Babilian</p>
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+    </section>
 </body>
 </html>

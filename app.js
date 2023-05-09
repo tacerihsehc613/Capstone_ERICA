@@ -9,13 +9,15 @@ const passport = require('passport');
 
 dotenv.config();
 
+const pageRouter = require('./routes/page');
 const neoRouter = require('./routes/neo');
+const authRouter = require('./routes/auth');
 
 const { sequelize } = require('./models');
-//const passportConfig = require('./passport');
+const passportConfig = require('./passport');
 
 const app = express();
-//passportConfig();
+passportConfig();
 app.set('port', process.env.PORT || 8008);
 app.set('view engine', 'html');
 app.set('view engine', 'ejs')
@@ -45,9 +47,11 @@ app.use(session({
         secure: false,
     },
 }));
-//app.use(passport.initialize());
-//app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
+app.use('/', pageRouter);
+app.use('/auth', authRouter);
 app.use('/neo', neoRouter);
 
 app.use((req, res, next) => {

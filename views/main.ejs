@@ -11,24 +11,15 @@
         <div class="container">
             <div class="profile-wrap">
                 <div class="profile">
-                    {% if user and user.id %}
-                        <div class="user-name">{{'안녕하세요! ' + user.nick + '님'}}</div>
-                        <div class="half">
-                            <div>팔로잉</div>
-                            <div class="count following-count">{{followingCount}}</div>
-                        </div>
-                        <div class="half">
-                            <div>팔로워</div>
-                            <div class="count follower-count">{{followerCount}}</div>
-                        </div>
+                    {% if user and user.identity is defined%}
+                        <div class="user-name">{{'안녕하세요! ' + user.id + '님'}}</div>
                     <input id="my-id" type="hidden" value="{{user.id}}">
-                    <a id="my-profile" href="/profile" class="btn">내 프로필</a>
                     <a id="logout" href="/auth/logout" class="btn">로그아웃</a>
                     {% else %}
                         <form id="login-form" action="/auth/login" method="post">
                             <div class="input-group">
-                                <label for="email">이메일</label>
-                                <input id="email" type="email" name="email" required autofocus>
+                                <label for="id">아이디</label>
+                                <input id="id" type="text" name="id" required autofocus>
                             </div>
                             <div class="input-group">
                                 <label for="password">비밀번호</label>
@@ -45,8 +36,6 @@
                     <a href="https://www.zerocho.com" target="_blank">Polly</a>
                 </footer>
             </div>
-            {% block content %}
-            {% endblock %}
         </div>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script>
@@ -56,7 +45,5 @@
                 }
             };
         </script>
-        {% block script %}
-        {% endblock %}
     </body>
 </html>

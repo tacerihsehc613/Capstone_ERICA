@@ -13,14 +13,12 @@
   </form>
 
   <ul>
-    {% for record in records %}
-      <li>
-        Store: {{ record.store }}<br>
-        Address: {{ record.address }}<br>
-        Text: {{ record.text }}<br>
-        PageRank: {{ record.pagerank }}
-      </li>
-    {% endfor %}
+    <li>
+      Id: {{ user.id }}<br>
+      community: {{ user.community }}<br>
+      password: {{ user.password }}<br>
+      PageRank: {{ user.pagerank }}
+    </li>
   </ul>
 </body>
 </html>

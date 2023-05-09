@@ -4,7 +4,39 @@ const { getNodeRecords2, getEdgeRecords2 } = require('../neo4j/review');
 const { getCustomerStoreList } = require('../neo4j/aura');
 const getRecords = require('../ML/connect');
 
+//const User = require('../models/user');
+const { getUserRecord, getUserRecord2 } = require('../models/user');
+//const { getUserRecord: User }   = require('../models/user');
 const router = express.Router();
+
+router.get('/', async (req, res, next) => {
+  try {
+    const query=`
+      MATCH (n:Customer)
+      WHERE n.lastname = $id and n.loginPw=$password
+      RETURN n.identity as identity, n.lastname as id, n.loginPw as password,n.pagerank as pagerank,n.community as community
+    `;
+    const query2=`
+      MATCH (n:Customer)
+      WHERE n.identity=$identity
+      RETURN n.identity as identity, n.lastname as id, n.loginPw as password,n.pagerank as pagerank,n.community as community
+    `;
+    const id="Kang";
+    const password=221115889719;
+    const identity=0;
+    const user = await getUserRecord(query, id, password);
+    const user2 = await getUserRecord2(query2,identity);
+    console.log(user);
+    console.log(user2);
+    console.log(typeof(user));
+    console.log(user['id']);
+    console.log(user['identity']);
+    res.render('user', { user });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
 
 router.get('/company', async (req, res, next) => {
   try {

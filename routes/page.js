@@ -28,6 +28,8 @@ router.get('/', async (req, res, next) => {
             RETURN n.identity as identity, n.lastname as id, n.loginPw as password,n.pagerank as pagerank,n.community as community
         `;
         //const user = await User(query2, identity);
+        console.log('user print');
+        console.log(req.user);
         res.render('main', {
             title: 'NodeBird'
         });

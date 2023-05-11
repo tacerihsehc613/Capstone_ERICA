@@ -112,7 +112,7 @@ async function getSimilarStoreInfo(query, identityList) {
     const driver= createDriver();
     const session = driver.session();
     try {
-        const result = await session2.run(query2, params);
+        const result = await session.run(query2, identityList);
         const records = result.records.map(record => ({
             storeId: record.get("storeId").toNumber(),
             name: record.get('name')
@@ -122,3 +122,5 @@ async function getSimilarStoreInfo(query, identityList) {
         return Promise.reject(error);
     }
 } 
+
+module.exports = {getSimilarStore, getSimilarStoreInfo};

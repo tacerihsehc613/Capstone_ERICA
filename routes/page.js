@@ -30,9 +30,18 @@ router.get('/', async (req, res, next) => {
         //const user = await User(query2, identity);
         console.log('user print');
         console.log(req.user);
-        res.render('main', {
+        /*res.render('main', {
             title: 'NodeBird'
-        });
+        });*/
+        if (res.locals.user) {
+            res.render('main', {
+                title: 'NodeBird'
+            });
+        } else {
+            res.render('login', {
+                title: 'JR Login'
+            });
+        }
     } catch (err) {
         console.error(err);
         next(err);

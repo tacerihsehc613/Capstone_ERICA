@@ -20,6 +20,10 @@ router.get('/profile', isLoggedIn, (req, res) => {
     res.render('join', { title: '회원가입 - NodeBird '});
 });*/
 
+router.get('/moderator', isLoggedIn, (req, res) => {
+    res.render('moderator', { title: 'Manage Store' });
+});
+
 router.get('/', async (req, res, next) => {
     try{
         const query2=`

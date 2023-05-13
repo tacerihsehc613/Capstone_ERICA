@@ -11,8 +11,6 @@ function createDriver() {
 const driver = createDriver();
 const session = driver.session();
 
-
-//각 store별로 가장 많이 구매한 상품 3개
 const query=`
     match (s:Store {name: $storeName}) SET s.img=$img
     return s.name as name,s.img as img

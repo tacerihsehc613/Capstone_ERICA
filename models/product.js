@@ -19,7 +19,7 @@ const query=`
     RETURN pName, count(c) as customerCount order by customerCount desc limit 3
 `;
 
-const storeName="삼촌식당"
+const storeName="진로집"
 
 session.run(query, { storeName: storeName })
     .then(result => {

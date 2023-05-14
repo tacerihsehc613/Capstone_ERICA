@@ -103,7 +103,7 @@ router.get('/review', async (req, res, next) => {
     //res.render('neo-graph', { g: JSON.stringify(graph).replace(/"/g, '&quot;')  });
     //res.render('neo-graph', { g: JSON.stringify(graph)  });
     //res.render('neo-graph', { g: graph });
-    console.log(graph);
+    //console.log(graph);
     res.render('force2', { g: JSON.stringify(graph) });
   } catch (err) {
     console.error(err);

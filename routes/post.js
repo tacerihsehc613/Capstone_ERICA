@@ -19,11 +19,17 @@ try {
 const upload = multer({
     storage: multer.diskStorage({
         destination(req, file, cb) {
-            cb(null, 'uploads/');
+            const path= 'uploads/';
+            fs.mkdirSync(path, { recursive: true });
+            //cb(null, 'uploads/');
+            cb(null, path);
         },
         filename(req, file, cb) {
             const ext = path.extname(file.originalname);
+            console.log("ext: ", ext);
             cb(null, path.basename(file.originalname, ext) + Date.now() +ext);
+            //const originalName = file.originalname;
+            //cb(null, 'img/' + originalName);
         },
     }),
     limits: { filesize: 5 * 1024 * 1024},
@@ -31,6 +37,8 @@ const upload = multer({
 
 router.post('/img', isLoggedIn, upload.single('img'), (req, res) => {
     console.log(req.file);
+    //const encodedFilename = encodeURI(req.file.filename);
+    //res.json({ url: `/img/${encodedFilename}`});
     res.json({ url: `/img/${req.file.filename}`});
 }); 
 
@@ -46,6 +54,8 @@ router.post('/', isLoggedIn, upload2.none(), async (req, res, next) => {
             img: req.body.url,
             UserId: req.user.id,
         }); */
+        //const encodedFilename = encodeURI(req.body.url);
+        //const store = await setStoreImage(query, req.body.storeName, encodedFilename);
         const store = await setStoreImage(query, req.body.storeName, req.body.url);
         console.log("store");
         console.log(store);

@@ -80,7 +80,7 @@ session2.run(query2, { limit: neo4j.int(limit) })
                 target: to.toNumber(),
                 weight: weight.toNumber()
             };
-            console.log(from.toNumber(), to.toNumber(), weight.toNumber());
+            //console.log(from.toNumber(), to.toNumber(), weight.toNumber());
             graph.links.push(link);
         });
     })
@@ -88,9 +88,9 @@ session2.run(query2, { limit: neo4j.int(limit) })
         console.error(error);
     })
     .finally(() => {
-        console.log("Sdfd");
+        /* console.log("Sdfd");
         console.log(graph.links);
-        console.log(typeof(graph.links));
+        console.log(typeof(graph.links)); */
         session2.close();
         driver.close();
     });

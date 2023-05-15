@@ -20,7 +20,7 @@ const query=`
 const query2 = `
     MATCH (s:Store) 
     WHERE s.storeId IN $identityList
-    RETURN s.storeId as storeId, s.name as name
+    RETURN s.storeId as storeId, s.name as name, s.img as img
 `;
 
 const identity=0;
@@ -68,7 +68,8 @@ session2.run(query2, params)
     result.records.forEach(record => {
         const storeId = record.get("storeId");
         const name = record.get("name");
-        console.log(`${storeId}: ${name}`);
+        const img = record.get("img");
+        console.log(`${storeId}: ${name} : ${img}`);
     });
     //console.log(result);
 })
@@ -115,7 +116,8 @@ async function getSimilarStoreInfo(query, identityList) {
         const result = await session.run(query2, identityList);
         const records = result.records.map(record => ({
             storeId: record.get("storeId").toNumber(),
-            name: record.get('name')
+            name: record.get('name'),
+            img: record.get('img')
         }));
         return records;
     } catch (error) {

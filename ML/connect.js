@@ -35,7 +35,7 @@ session.run(query, { limit: neo4j.int(limit) })
             const text = record.get('n.text');
             const pagerank = record.get('pg');
 
-            console.log(`Store: ${store}, Address: ${address}, Text: ${text}, PageRank: ${pagerank}`);
+            //console.log(`Store: ${store}, Address: ${address}, Text: ${text}, PageRank: ${pagerank}`);
         });
     })
     .catch(error => {

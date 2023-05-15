@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="mypage.css">
+    <!-- <script src="jquery"></script> -->
+</head>
+<div>
+
+</div>
+<body>
+    <section class="main-form">
+        <div class="logobox">
+            <a href="main.html">
+                <img class="logo_main" src="img/jr.png"  alt="JR_logo">
+            </a>
+        </div>
+        <div>
+            <button class="home-button" onclick="location.href='/neo/review'">Home</button>
+        </div>
+        <div>
+            <button class="logout-button" onclick="location.href='login.html'">Logout</button>
+        </div>
+        <div class="white_background">
+            <div class="comment">
+                <div class="starbox">
+                    <img class="star" src="img/star.png" alt="star">
+                </div>
+                <h1 class="text_1">Favorites</h1>
+            </div>
+            <div class="cardBox">
+                <div>
+                    <a class="none" href="googoodang.html">
+                        <img class="circle_img" src="{{stores[0].img}}" alt="googoodang_img">
+                        <p class="storeName">{{stores[0].name}}</p>
+                    </a>
+                </div>
+                <div>
+                    <a class="none" href="nubase.html">
+                        <img class="circle_img" src="{{stores[1].img}}" alt="nubase_img">
+                        <p class="storeName">{{stores[1].name}}</p>
+                    </a>
+                </div>
+                <div>
+                    <a class="none" href="babilian.html">
+                        <img class="circle_img" src="{{stores[2].img}}" alt="babilian_img">
+                        <p class="storeName">{{stores[2].name}}</p>
+                    </a>
+                </div>
+            </div>
+            <!-- <div class="cardBox">
+                <div class="card">
+                    <div><p class="storeName">Googoodang</p></div>
+                </div>
+                <div class="card">
+                    <div><p class="storeName">Nubase</p></div>
+                </div>
+                <div class="card">
+                    <div><p class="storeName">Babilian</p></div>
+                </div>
+            </div> -->
+        </div>
+    </section>
+</body>
+</html>

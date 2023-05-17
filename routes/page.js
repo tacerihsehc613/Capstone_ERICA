@@ -38,9 +38,10 @@ router.get('/', async (req, res, next) => {
             title: 'NodeBird'
         });*/
         if (res.locals.user) {
-            res.render('main', {
+            /*res.render('main', {
                 title: 'NodeBird'
-            });
+            });*/
+            return res.redirect('/neo/review');
         } else {
             res.render('login', {
                 title: 'JR Login'

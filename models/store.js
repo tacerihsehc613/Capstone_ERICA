@@ -18,7 +18,7 @@ const query=`
 
 const storeName="군자네";
 const img= '/img/mel41679844402840.jpeg';
-session.run(query, { storeName: storeName, img: img })
+/* session.run(query, { storeName: storeName, img: img })
     .then(result => {
         result.records.forEach(record => {
             const name = record.get('name');
@@ -32,7 +32,7 @@ session.run(query, { storeName: storeName, img: img })
     .finally(() => {
         session.close();
         driver.close();
-    });
+    }); */
 
 async function setStoreImage(query, storeName, img) {
     const driver= createDriver();

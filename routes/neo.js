@@ -9,6 +9,13 @@ const { getUserRecord, getUserRecord2 } = require('../models/user');
 //const { getUserRecord: User }   = require('../models/user');
 const router = express.Router();
 
+router.use((req, res, next) => {
+  res.locals.user = req.user;
+  console.log("neo-user");
+  console.log(res.locals.user);
+  next();
+});
+
 router.get('/', async (req, res, next) => {
   try {
     const query=`

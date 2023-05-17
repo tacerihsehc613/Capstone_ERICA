@@ -3,13 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <title>Influential Customer</title>
+  <link rel="stylesheet" type="text/css" href="./../force.css">
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://d3js.org/d3-force.v3.min.js"></script>
+  <style>
+    body {
+        background-color: #fffaeb;
+    }
+    canvas {
+      background-color: #ffebeb;
+    }
+  </style>
 </head>
 <body>
 
 <h1>Influential Customer</h1>
-<canvas id="network" width="1000" height="700"></canvas>
+<h1 class="login-info">Logined as </h1>
+<h1 class="login-name">{{ user.id }} </h1>
+<div>
+  <button class="my-page-button" onclick="location.href='/mypage'">MyPage</button>
+</div>
+<div>
+  <button class="home-button" onclick="location.href='/neo/review'">Home</button>
+</div>
+<div>
+  <button class="logout-button" onclick="location.href='login.html'">Logout</button>
+</div>
+<canvas id="network" width="800" height="600"></canvas>
 <div id="selected-node"></div>
 <script>
 

@@ -33,7 +33,7 @@ MATCH (c1:Customer)-[b:BoughtAt]->(s:Store)
 WHERE c1.identity IN $cList AND NOT EXISTS {
   MATCH (c2:Customer {identity: $identity})-[:BoughtAt]->(s)
 }
-RETURN c1.identity,c1.community,s.storeId, s.name, b.num
+RETURN c1.identity,c1.lastname,c1.community,s.storeId, s.name, b.num
 ORDER BY b.num DESC limit 3
 `;
 const identity=7;
@@ -44,14 +44,14 @@ const params = {
     cList: cList
 };
 
-session.run(query, { identity: neo4j.int(identity) })
+/*session.run(query, { identity: neo4j.int(identity) })
     .then(result => {
         result.records.forEach(record => {
             const c = record.get('c');
             const num = record.get('num');
             const name = record.get('name');
             const community = record.get('community');
-            console.log(`c: ${c}, num: ${num}, name: ${name}, community: ${community}`);
+            //console.log(`c: ${c}, num: ${num}, name: ${name}, community: ${community}`);
         });
     })
     .catch(error => {
@@ -66,11 +66,12 @@ session.run(query, { identity: neo4j.int(identity) })
     .then(result => {
         result.records.forEach(record => {
             const c = record.get('c1.identity');
+            const cname = record.get('c1.lastname');
             const community = record.get('c1.community');
             const storeId = record.get('s.storeId');
             const name = record.get('s.name');
             const num = record.get('b.num');
-            console.log(`c: ${c}, community: ${community}, storeId: ${storeId}, name: ${name}, num: ${num}`)
+            //console.log(`c: ${c}, cname: ${cname}, community: ${community}, storeId: ${storeId}, name: ${name}, num: ${num}`)
         });
     })
     .catch(error => {
@@ -79,7 +80,7 @@ session.run(query, { identity: neo4j.int(identity) })
     .finally(() => {
         session2.close();
         driver.close();
-    });
+    }); */
 
 async function getNeoRecommendationUser(query, identity) {
     const driver= createDriver();
@@ -109,6 +110,7 @@ async function getNeoRecommendationStore(query, identity, cList) {
         const result = await session.run(query2, params);
         const records = result.records.map(record => ({
             c: record.get('c1.identity'),
+            cname: record.get('c1.lastname'),
             community: record.get('c1.community').toNumber(),
             storeId: record.get('s.storeId').toNumber(),
             name: record.get('s.name'),

@@ -18,7 +18,7 @@
 .login-name{
     color: crimson;
     display: inline-block;
-    position: absolute; left: 450px; top: -10px;
+    position: absolute; left: 460px; top: -10px;
     padding: 10px 5px;
     margin: 30px 5px;
     border: none;
@@ -104,3 +104,36 @@
     color: #000000;
     cursor: pointer;
 }
+
+.storeName{
+    position: relative;
+    font-size: 20px;
+    /* text-decoration: none; */
+    color: #000000;
+  }
+
+.text_1{
+    color:limegreen;
+}
+
+.text_2{
+    color:forestgreen;
+}
+
+.rating-bar {
+    position: relative;
+    height: 20px; /* Adjust the height of the rating bar */
+    background-color: green; /* Adjust the background color of the rating bar */
+    transition: width 0.5s ease; /* Adjust the transition duration and timing function */
+  }
+  
+  .rating-label {
+    position: absolute;
+    font-size: 12px; /* Adjust the font size of the rating labels */
+    top: -20px; /* Adjust the vertical position of the labels */
+  }
+  
+  .rating-label.right {
+    right: 0; /* Position the right label at the end of the rating bar */
+  }
+  

@@ -3,6 +3,8 @@ const { getNodeRecords, getEdgeRecords } = require('../neo4j/company');
 const { getNodeRecords2, getEdgeRecords2 } = require('../neo4j/review');
 const { getCustomerStoreList } = require('../neo4j/aura');
 const getRecords = require('../ML/connect');
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
+const {getNeoRecommendationUser, getNeoRecommendationStore} = require('../neo4j/rating');
 
 //const User = require('../models/user');
 const { getUserRecord, getUserRecord2 } = require('../models/user');
@@ -45,7 +47,7 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.get('/company', async (req, res, next) => {
+router.get('/company',isLoggedIn, async (req, res, next) => {
   try {
     const limit = 10; // the limit value can be set to any number you want
     const query=`
@@ -64,17 +66,61 @@ router.get('/company', async (req, res, next) => {
       MATCH (c2:Customer) WHERE c2.identity = toInteger(c2_id) AND c2.identity <> c_id and c2.identity in c_ids WITH c_id,  c2_id,apoc.convert.fromJsonMap(i.map)[c2_id] AS weight
       RETURN c_id as from, toInteger(c2_id) as to, weight
     `;
+    const query3=`
+        CALL {
+            MATCH (c:Customer_INTER)
+            WHERE c.from = $identity
+            UNWIND keys(apoc.convert.fromJsonMap(c.map)) AS c2_id
+            MATCH (c2:Customer)
+            WHERE c2.identity = toInteger(c2_id)
+            RETURN c2.identity AS c, apoc.convert.fromJsonMap(c.map)[c2_id] AS num, c2.lastname as name, c2.community as community
+            UNION ALL
+            MATCH (c:Customer_INTER)
+            WHERE toString($identity) IN keys(apoc.convert.fromJsonMap(c.map))
+            MATCH (customer:Customer {identity: c.from})
+            RETURN c.from AS c, apoc.convert.fromJsonMap(c.map)[toString($identity)] AS num, customer.lastname AS name,customer.community as community
+        }
+        return c,num,name,community
+        ORDER BY num DESC limit 3
+        `;
+        const query4=`
+            MATCH (c1:Customer)-[b:BoughtAt]->(s:Store)
+            WHERE c1.identity IN $cList AND NOT EXISTS {
+                MATCH (c2:Customer {identity: $identity})-[:BoughtAt]->(s)
+            }
+            RETURN c1.identity,c1.lastname,c1.community,s.storeId, s.name, b.num
+            ORDER BY b.num DESC limit 3
+        `;
     var graph = {
       nodes : [],
       links : []
     }
     graph.nodes= await getNodeRecords(query, limit);
     graph.links = await getEdgeRecords(query2, limit);
-
+    console.log('user33 print');
+    console.log(req.user);
+    const identity=req.user['identity'];
+        const comunity=req.user['community'];
+        const users = await getNeoRecommendationUser(query3, identity);
+        const cList = users.map(user => user.c);
+        const stores= await getNeoRecommendationStore(query4,identity,cList);
+        let rating;
+        if (stores.every(store => store.community === comunity)) {
+            rating = 100;
+          } else if (stores.length === 1) {
+            rating = 33;
+          } else if (stores.length === 2) {
+            rating = 66;
+          } else {
+            rating = 0;
+          }
+        console.log('stores print');
+        console.log(stores);
+        console.log('Rating:', rating);
     //res.render('neo-graph', { g: JSON.stringify(graph).replace(/"/g, '&quot;')  });
     //res.render('neo-graph', { g: JSON.stringify(graph)  });
     //res.render('neo-graph', { g: graph });
-    res.render('force', { g: JSON.stringify(graph) });
+    res.render('force', { g: JSON.stringify(graph), stores, rating });
   } catch (err) {
     console.error(err);
     next(err);

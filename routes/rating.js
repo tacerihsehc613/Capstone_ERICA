@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.use((req, res, next) => {
     res.locals.user = req.user;
-    console.log("xxxxx33");
-    console.log(res.locals.user);
+    //console.log("xxxxx33");
+    //console.log(res.locals.user);
     next();
 });
 
@@ -37,7 +37,7 @@ WHERE c1.identity IN $cList AND NOT EXISTS {
 RETURN c1.identity,c1.community,s.storeId, s.name, b.num
 ORDER BY b.num DESC limit 3
 `;
-    const identity=0;
+    /*const identity=0;
     const users= await getNeoRecommendationUser(query, identity);
     console.log("neo-users");
     console.log(users);
@@ -65,7 +65,7 @@ ORDER BY b.num DESC limit 3
         rating = 0;
       }
       
-      console.log('Rating:', rating);
+      console.log('Rating:', rating);*/
     
   } catch (err) {
     console.error(err);

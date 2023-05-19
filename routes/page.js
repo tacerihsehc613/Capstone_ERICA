@@ -3,6 +3,7 @@ const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 //const { Post, User, Hashtag } = require('../models');
 const { getUserRecord: User }   = require('../models/user');
 const {getSimilarStore, getSimilarStoreInfo} = require('../neo4j/similarity');
+const {getNeoRecommendationUser, getNeoRecommendationStore} = require('../neo4j/rating');
 const router = express.Router();
 
 router.use((req, res, next) => {
@@ -32,15 +33,15 @@ router.get('/', async (req, res, next) => {
             RETURN n.identity as identity, n.lastname as id, n.loginPw as password,n.pagerank as pagerank,n.community as community
         `;
         //const user = await User(query2, identity);
-        console.log('user print');
-        console.log(req.user);
-        /*res.render('main', {
-            title: 'NodeBird'
-        });*/
         if (res.locals.user) {
             /*res.render('main', {
                 title: 'NodeBird'
             });*/
+            console.log('user print');
+            console.log(req.user);
+        /*res.render('main', {
+            title: 'NodeBird'
+        });*/
             return res.redirect('/neo/review');
         } else {
             res.render('login', {

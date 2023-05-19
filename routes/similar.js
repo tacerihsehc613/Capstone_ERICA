@@ -6,8 +6,8 @@ const router = express.Router();
 
 router.use((req, res, next) => {
     res.locals.user = req.user;
-    console.log("xxxxx22");
-    console.log(res.locals.user);
+    //console.log("xxxxx22");
+    //console.log(res.locals.user);
     next();
 });
 

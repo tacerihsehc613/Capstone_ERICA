@@ -15,6 +15,7 @@ const authRouter = require('./routes/auth');
 const postRouter = require('./routes/post');
 
 const similarRouter = require('./routes/similar');
+const ratingRouter = require('./routes/rating');
 
 const { sequelize } = require('./models');
 const passportConfig = require('./passport');
@@ -59,6 +60,7 @@ app.use('/post', postRouter);
 app.use('/neo', neoRouter);
 
 app.use('/similar', similarRouter);
+app.use('/rating', ratingRouter);
 
 app.use((req, res, next) => {
     const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);

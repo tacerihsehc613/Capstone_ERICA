@@ -2,8 +2,8 @@
 ### web page
 
 <img src="https://github.com/tacerihsehc613/Capstone_ERICA/assets/127294863/655698be-3d8f-4159-b590-9b40a413146a.png" width="300" height="300">
-<img src="https://github.com/tacerihsehc613/Capstone_ERICA/assets/127294863/4383e8e3-0bbb-4fea-bf30-3953aace7bce.png" width="300" height="300">
-<img src="https://github.com/tacerihsehc613/Capstone_ERICA/assets/127294863/4f79526e-5271-4ed0-89d4-523b5f92250b" width="400" height="300">
+<img src="https://github.com/tacerihsehc613/Capstone_ERICA/assets/127294863/bb76064c-3894-4df6-a055-d580e266e803" width="400" height="300">
+<img src="https://github.com/tacerihsehc613/Capstone_ERICA/assets/127294863/43efbfba-1f1b-4362-92ce-d41c10c8e74f" width="400" height="300">
 
 ### AuraDB company meta-graph 
 

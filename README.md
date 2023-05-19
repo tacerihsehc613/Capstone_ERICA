@@ -1,5 +1,11 @@
 # neo-dashboard
-### AuraDB db company meta-graph 
+### web page
+
+<img src="https://github.com/tacerihsehc613/Capstone_ERICA/assets/127294863/655698be-3d8f-4159-b590-9b40a413146a.png" width="300" height="300">
+<img src="https://github.com/tacerihsehc613/Capstone_ERICA/assets/127294863/4383e8e3-0bbb-4fea-bf30-3953aace7bce.png" width="300" height="300">
+<img src="https://github.com/tacerihsehc613/Capstone_ERICA/assets/127294863/4f79526e-5271-4ed0-89d4-523b5f92250b" width="400" height="300">
+
+### AuraDB company meta-graph 
 
 AuraDB 에 호스팅한 회사 데이타 베이스. 
 #### 링크

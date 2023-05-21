@@ -57,9 +57,6 @@ router.post('/', isLoggedIn, upload2.none(), async (req, res, next) => {
         //const encodedFilename = encodeURI(req.body.url);
         //const store = await setStoreImage(query, req.body.storeName, encodedFilename);
         const store = await setStoreImage(query, req.body.storeName, req.body.url);
-        console.log("store");
-        console.log(store);
-        console.log(typeof(store));
         /* const hashtags = req.body.content.match(/#[^\s#]+/g);
         if (hashtags) {
             const result = await Promise.all(

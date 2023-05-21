@@ -15,10 +15,11 @@ const query=`
     match (s:Store {name: $storeName}) SET s.img=$img
     return s.name as name,s.img as img
 `;
+const query2=`MATCH (s:Store{name:$storeName}) RETURN s.img as img`
 
-const storeName="군자네";
-const img= '/img/mel41679844402840.jpeg';
-/* session.run(query, { storeName: storeName, img: img })
+const storeName="방학사거리짬뽕집";
+/*const img= '/img/mel41679844402840.jpeg';
+session.run(query, { storeName: storeName, img: img })
     .then(result => {
         result.records.forEach(record => {
             const name = record.get('name');
@@ -32,7 +33,7 @@ const img= '/img/mel41679844402840.jpeg';
     .finally(() => {
         session.close();
         driver.close();
-    }); */
+    });  */
 
 async function setStoreImage(query, storeName, img) {
     const driver= createDriver();
@@ -49,4 +50,17 @@ async function setStoreImage(query, storeName, img) {
     }
 } 
 
-module.exports = {setStoreImage};
+async function getStoreImage(query2, storeName) {
+    const driver= createDriver();
+    const session = driver.session();
+    try {
+        const result = await session.run(query2, { storeName: storeName});
+        const record = result.records[0];
+        const img = record.get('img');
+        return img;
+    } catch (error) {
+        return Promise.reject(error);
+    }
+} 
+
+module.exports = {setStoreImage, getStoreImage};

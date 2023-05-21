@@ -41,9 +41,9 @@ async function getProducts(query, storeName) {
     const driver= createDriver();
     const session = driver.session();
     try {
-        const result = await session.run(query, storeName);
+        const result = await session.run(query, { storeName: storeName} );
         const records = result.records.map(record => ({
-            pName: record.get(pName),
+            pName: record.get('pName'),
             customerCount: record.get('customerCount').toNumber()
         }));
         return records;

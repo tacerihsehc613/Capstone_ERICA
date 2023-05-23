@@ -49,9 +49,11 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
 });
 
 router.get('/logout', isLoggedIn, (req, res)=>{
-    res.logout();
-    res.session.destroy();
-    res.redirect('/login');
+    //res.logout();
+    console.log("lllllll");
+    req.session.destroy();
+    //res.locals.user=null;
+    res.redirect('/');
 });
 
 router.get('/kakao', passport.authenticate('kakao'));

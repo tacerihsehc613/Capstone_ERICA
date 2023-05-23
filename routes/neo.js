@@ -210,4 +210,12 @@ router.post('/review-text', (req, res) => {
       res.status(500).send('An error occurred');
     });
 });
+
+router.get('/logout', isLoggedIn, (req, res) => {
+  console.log("loggggg");
+  //req.logout();
+  res.session.destroy();
+  res.redirect('/');
+  //res.redirect('/');
+});
 module.exports = router;

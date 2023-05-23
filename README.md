@@ -1,9 +1,9 @@
 # neo-dashboard
 ### web page
 
-<img src="https://github.com/tacerihsehc613/Capstone_ERICA/assets/127294863/655698be-3d8f-4159-b590-9b40a413146a.png" width="300" height="300">
-<img src="https://github.com/tacerihsehc613/Capstone_ERICA/assets/127294863/bb76064c-3894-4df6-a055-d580e266e803" width="400" height="300">
-<img src="https://github.com/tacerihsehc613/Capstone_ERICA/assets/127294863/43efbfba-1f1b-4362-92ce-d41c10c8e74f" width="400" height="300">
+<img src="https://github.com/tacerihsehc613/Capstone_ERICA/assets/127294863/44d130d7-2808-435b-8f48-82a59aaab34b.png" width="300" height="300">
+<img src="https://github.com/tacerihsehc613/Capstone_ERICA/assets/127294863/a4a92240-52ee-424a-bd2d-1b8aff5214f3.png" width="400" height="300">
+<img src="https://github.com/tacerihsehc613/Capstone_ERICA/assets/127294863/1648352e-ded0-4d4c-a6b0-e7e7a6c1b70f" width="400" height="300">
 
 ### AuraDB company meta-graph 
 

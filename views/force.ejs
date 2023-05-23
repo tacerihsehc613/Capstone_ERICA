@@ -30,7 +30,7 @@
   <button class="my-page-button" onclick="location.href='/mypage'">MyPage</button>
 </div>
 <div>
-  <button class="home-button" onclick="location.href='/neo/review'">Home</button>
+  <button class="home-button" onclick="location.href='/neo/review'">Review</button>
 </div>
 <div>
   <button class="logout-button" onclick="location.href='login.html'">Logout</button>
@@ -45,12 +45,12 @@
     </a>
   </div>
   <div>
-      <a class="none" href="nubase.html" style="text-decoration: none;">
+      <a class="none" href="/store?name={{stores[1].name}}" style="text-decoration: none;">
         <p class="storeName">{{stores[1].cname}} visited {{stores[1].name}}</p>
       </a>
   </div>
   <div>
-      <a class="none" href="babilian.html" style="text-decoration: none;">
+      <a class="none" href="/store?name={{stores[2].name}}" style="text-decoration: none;">
         <p class="storeName">{{stores[2].cname}} visited {{stores[2].name}}</p>
       </a>
   </div>

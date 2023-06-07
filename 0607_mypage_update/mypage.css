@@ -156,11 +156,11 @@ body::before {
     margin-top: 0px;
     background-color: #ffffff;
     width: 98vw;
-    height: 540px;
+    height: 490px;
 }
 
 .circle_img{
-    margin-top: 50px;
+    margin-top: 30px;
     margin-left: 50px;
     margin-right: 50px;
     float:left;
@@ -341,25 +341,6 @@ body::before {
 .space{
     margin-right: 30px;
 }
-
-.circle_img_2{
-    margin-top: 50px;
-    margin-left: 50px;
-    margin-right: 50px;
-    float:left;
-    /* display:flex;
-    justify-content:space-around;
-    align-content: space-evenly; */
-    background-repeat: no-repeat;
-    background-size:cover;
-    /* background-position: 50%; */
-    border-radius: 90px;
-    width: 280px;
-    height: 280px;
-    /* padding-top: 10%; */
-    margin-bottom: 20px;
-}
-
 
 .cardBox2{
     display: flex;

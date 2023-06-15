@@ -20,7 +20,7 @@
         }
         .cardPkTextPosition {
             white-space: pre-wrap;
-        }               
+        }
     </style>
 </head>
 
@@ -42,13 +42,10 @@
          <svg id="svg2"></svg>
 
     </div>
-    <div id="common-keywords-list">
-        <h2>Common Keywords between two stores</h2>
-        <ul id="keywords-list"></ul>
-    </div>
 
     <script>
         var graph = JSON.parse('{{g | safe}}');
+
         // 그래프를 그리기 위한 객체
         const networkGraph = {
             createGraph: function (nodes, links) {
@@ -293,29 +290,6 @@
         
 
         networkGraph.createGraph(graph.nodes, graph.links);
-
-        /*const listItem = document.createElement('li');
-        listItem.textContent='sadssa';
-        document.getElementById('keywords-list').appendChild(listItem);
-        document.getElementById('keywords-list').appendChild(document.createElement('hr'));
-        console.log("graph.links:", typeof(graph.links));*/
-        graph.links.forEach(link => {
-            /*console.log("sdfdsssssss: ", typeof(graph.nodes[0]['id']));
-            console.log("aaaaaa",typeof(link.source));
-            console.log("aaaaaa3",link.source['id']);*/
-            const sourceNode = graph.nodes.find(node => node.id === link.source['id']);
-            const targetNode = graph.nodes.find(node => node.id === link.target['id']);
-            //console.log("sourceNode:", sourceNode);
-            //console.log("aaaa graphhhhh");
-            if (sourceNode && targetNode) {
-                const commonKeywords = link.commonKeywords.join(', ');
-                const keywordsList = document.getElementById('keywords-list');
-                const listItem = document.createElement('li');
-                listItem.textContent = `${sourceNode.store} and ${targetNode.store} share common keywords: ${link.commonKeywords}`;
-                keywordsList.appendChild(listItem);
-            }
-  
-        });
 
     </script>
 

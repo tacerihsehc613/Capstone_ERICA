@@ -104,3 +104,9 @@
     color: #000000;
     cursor: pointer;
 }
+
+#common-keywords-list{
+    display: inline;
+    white-space: nowrap;
+    position: absolute; left: 850px; top: 200px;
+}

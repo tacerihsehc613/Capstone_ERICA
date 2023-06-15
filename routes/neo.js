@@ -1,6 +1,6 @@
 const express = require('express');
 const { getNodeRecords, getEdgeRecords } = require('../neo4j/company');
-const { getNodeRecords2, getEdgeRecords2 } = require('../neo4j/review');
+const { getNodeRecords2, getEdgeRecords2, getEdgeRecords3 } = require('../neo4j/review');
 const { getCustomerStoreList } = require('../neo4j/aura');
 const getRecords = require('../ML/connect');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
@@ -99,6 +99,8 @@ router.get('/company',isLoggedIn, async (req, res, next) => {
     graph.links = await getEdgeRecords(query2, limit);
     console.log('user33 print');
     console.log(req.user);
+    console.log('ggggraph');
+    console.log(JSON.stringify(graph));
     const identity=req.user['identity'];
         const comunity=req.user['community'];
         const users = await getNeoRecommendationUser(query3, identity);
@@ -146,17 +148,42 @@ router.get('/review', async (req, res, next) => {
       MATCH (c2:Review) WHERE c2.identity = toInteger(c2_id) AND c2.identity <> c_id and c2.identity in c_ids WITH c_id,  c2_id,apoc.convert.fromJsonMap(i.map)[c2_id] AS weight
       RETURN c_id as from, toInteger(c2_id) as to, weight
     `;
+    const query3 = `
+      MATCH (c:Review)
+      WITH c ORDER BY c.pagerank DESC LIMIT $limit
+      WITH COLLECT(c.identity) AS c_ids
+      UNWIND c_ids AS c_id
+      WITH c_id, c_ids
+      MATCH (i:Review_INTER) WHERE i.from = c_id
+      UNWIND keys(apoc.convert.fromJsonMap(i.map)) AS c2_id
+      MATCH (c2:Review) WHERE c2.identity = toInteger(c2_id) AND c2.identity <> c_id AND c2.identity IN c_ids
+      WITH c_id, c2_id, apoc.convert.fromJsonMap(i.map)[c2_id] AS weight
+      MATCH (from:Review {identity: c_id})-[:Include]->(fromKeyword:Keyword)
+      MATCH (to:Review {identity: toInteger(c2_id)})-[:Include]->(toKeyword:Keyword)
+      WITH c_id AS from, toInteger(c2_id) AS to, weight, COLLECT(DISTINCT fromKeyword.name) AS fromKeywords, COLLECT(DISTINCT toKeyword.name) AS toKeywords
+      RETURN from, to, weight, apoc.coll.intersection(fromKeywords, toKeywords) AS commonKeywords
+    `;
     var graph = {
       nodes : [],
       links : []
     }
     graph.nodes= await getNodeRecords2(query, limit);
-    graph.links = await getEdgeRecords2(query2, limit);
-
+    //graph.links = await getEdgeRecords2(query2, limit);
+    graph.links = await getEdgeRecords3(query3, limit);
     //res.render('neo-graph', { g: JSON.stringify(graph).replace(/"/g, '&quot;')  });
     //res.render('neo-graph', { g: JSON.stringify(graph)  });
     //res.render('neo-graph', { g: graph });
     //console.log(graph);
+    /* graph.links.forEach(link => {
+      const sourceNode = graph.nodes.find(node => node.id === link.source);
+      const targetNode = graph.nodes.find(node => node.id === link.target);
+      console.log("bbbb graphhhhh");
+      if (sourceNode && targetNode) {
+          const listItem = `${sourceNode.store} and ${targetNode.store} share common keywords: ${link.commonKeywords}`;
+          console.log(listItem);
+      }
+
+    }); */
     res.render('force2', { g: JSON.stringify(graph) });
   } catch (err) {
     console.error(err);
